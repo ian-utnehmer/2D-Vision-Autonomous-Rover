@@ -43,4 +43,42 @@ roslaunch jetracer move_base.launch
 python3 /publishing/pointcloud.py
 ```
 
-Then, view in RViz
+Then, view in RViz.
+
+
+
+
+
+
+### ROS Launch & Configuration
+* **`jetracer_paper.launch`**: A hardware-level launch file that sets the specific polynomial coefficients.
+* **`jetracer_paper.lua`**: The configuration script for **Google Cartographer**, defining tracking frames, distances, and sampling rates for 2D SLAM.
+* **`jetracer.urdf`**: The Unified Robot Description Format file. It defines the physical dimensions and visual properties of the JetRacer, including the positions of the camera and LiDAR relative to the base.
+
+### Navigation Stack Parameters
+* **`costmap_common_params.yaml`**: Defines settings shared by both local and global costmaps, such as the robot’s footprint and the standard LiDAR obstacle layer.
+* **`global_costmap_params.yaml`**: Configures the global map (used for long-term planning).
+* **`local_costmap_params.yaml`**: Configures the rolling window around the robot. Ensures the AI detections (paper/grass) are cleared or marked in real-time as the robot moves.
+* **`move_base_params.yaml`**: Selects the navigation planners (GlobalPlanner and TEB Local Planner) and defines recovery behaviors.
+
+### Perception & AI Inference
+* **`pointcloud.py`**: The main python script. Converts the 2D semantic segmentation masks (from Cityscapes) into a 3D `PointCloud2` message by projecting pixels into 3D space using Monodepth2 data.
+* **`cityscapes.py`**: A diagnostic script that runs the full Cityscapes model to visualize all 19-21 detectable classes (roads, people, vegetation, etc.) via WebRTC.
+* **`grassview.py` / `grassview2.py`**: These scripts focus specifically on the "Vegetation" class. They track the density of grass in the frame and calculate its distance from the robot using the calibration coefficients.
+* **`monodepth.py`**: A test script for the Monodepth2 model to verify depth estimation performance and frame rates on the Jetson Nano.
+
+### Training & Calibration
+* **`image_sampling.py`**: A utility used during the data collection phase to capture and save images from the CSI camera to build a custom training dataset.
+* **`train_resnet18_fpn.py`**: The PyTorch training script. It trains the segmentation model on a PC and exports the final result as a Jetson-optimized `.onnx` file.
+* **`paper_calibration.py`**: A manual calibration tool. It records raw AI depth values alongside physical measurements (inches) provided by the user to create a mapping dataset (`paper_data_inches.csv`).
+* **`training_script.py`**: Processes the calibration data using `numpy.polyfit` to generate the 3rd-degree polynomial coefficients used in the ROS nodes.
+* **`paper_test_coefficients.py`**: A live validation script that uses the generated $A, B, C, D$ coefficients to show real-time distance estimates for accuracy checking.
+* **`paper_depth_node.py`**: A ROS node used to monitor and print live distance calculations (raw vs. meters) during testing.
+
+### Utilities & Diagnostics
+* **`checkmissing.py`**: A system health script that verifies all necessary ROS packages, Python libraries, and workspace paths are correctly configured.
+* **`videostream.py`**: A simple test script to verify the CSI camera feed and WebRTC streaming functionality independently of the AI models.
+* **`restart.py`**: A convenience script that kills hanging camera processes and restarts the `nvargus-daemon` to clear hardware errors.
+
+
+
