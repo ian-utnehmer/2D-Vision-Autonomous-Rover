@@ -38,4 +38,9 @@ Before navigating, the depth-to-distance mapping must be calibrated using a rule
 ### Launching Navigation
 To start the full SLAM and navigation stack with paper/grass avoidance:
 ```bash
-roslaunch jetracer slam_paper.launch
+roslaunch jetracer jetracer_paper.launch
+roslaunch jetracer move_base.launch
+python3 /publishing/pointcloud.py
+'''
+
+Then, view in RViz
