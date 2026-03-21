@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="publish_odom_transform" default="false"/>
+  <param name="use_sim_time" value="false"/>
+
+  <include file="$(find jetracer)/launch/lidar.launch" />
+
+  <node pkg="jetracer" type="jetracer" name="jetracer" output="screen" respawn="true">
+    <param name="port_name" value="/dev/ttyACM0"/>
+    <param name="linear_correction" value="1.14"/>
+    <param name="coefficient_a" value="-0.016073"/>
+    <param name="coefficient_b" value="0.176183"/>
+    <param name="coefficient_c" value="-23.428084"/>
+    <param name="coefficient_d" value="1500"/>
+    <remap from="/odom" to="/odom_raw"/>
+    <param name="publish_odom_transform" value="$(arg publish_odom_transform)"/>
+  </node>
+  <node pkg="tf" type="static_transform_publisher" name="base_foot_to_link" args="0 0 0 0 0 0 base_footprint base_link 100" />
+
+<!--
+
+  <node pkg="tf" type="static_transform_publisher" name="base_link_to_laser" args="0.1 0 0.1 0 0 0 base_link laser_frame 100" />
+  <node pkg="tf" type="static_transform_publisher" name="base_footprint_to_base_link" args="0 0 0 0 0 0 base_footprint base_link 100" />
+
+-->
+  <node pkg="tf" type="static_transform_publisher" name="base_foot_to_imu" args="0 0 0.02 0 0 0 base_footprint base_imu_link 100"/>
+
+  <node name="cartographer_node" pkg="cartographer_ros"
+        type="cartographer_node" args="
+          -configuration_directory $(find jetracer)/config/cartographer
+          -configuration_basename jetracer_paper.lua"
+        output="screen">
+    <remap from="scan" to="/scan" />
+  </node>
+
+  <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros"
+        type="cartographer_occupancy_grid_node" args="-resolution 0.05" />
+
+  </launch>

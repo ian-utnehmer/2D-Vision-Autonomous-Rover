@@ -1,0 +1,15 @@
+footprint: [ [-0.10,-0.08], [0.10,-0.08], [0.10,0.08], [-0.10,0.08] ]
+
+transform_tolerance: 0.2
+#map_type: costmap
+
+footprint: [ [-0.10,-0.08], [0.10,-0.08], [0.10,0.08], [-0.10,0.08] ]
+transform_tolerance: 1
+
+# Standard LiDAR Layer
+obstacle_layer:
+  enabled: true
+  obstacle_range: 3.0
+  raytrace_range: 3.5
+  observation_sources: laser_scan_sensor
+  laser_scan_sensor: {data_type: LaserScan, topic: scan, marking: true, clearing: true}

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<launch>
+  <include file="$(find jetracer)/launch/jetracer.launch" />
+  <include file="$(find jetracer)/launch/lidar.launch" />
+
+  <node name="cartographer_node" pkg="cartographer_ros"
+        type="cartographer_node" args="
+          -configuration_directory $(find jetracer)/config/cartographer
+          -configuration_basename jetracer_paper.lua"
+        output="screen">
+    <remap from="scan" to="/scan" />
+  </node>
+
+
+
+  <param name="robot_description" textfile="/home/jetson/ParkingRobot/jetracer.urdf" />
+  
+  <node pkg="tf" type="static_transform_publisher" name="base_link_to_laser" args="0.1 0 0.1 0 0 0 base_link laser_frame 100" />
+  
+<!--
+  
+  <node pkg="tf" type="static_transform_publisher" name="base_to_camera" args="0.15 0 0.1 0 0 0 base_link camera_link 100" />
+
+  <node pkg="tf" type="static_transform_publisher" name="base_footprint_to_base_link" args="0 0 0 0 0 0 base_footprint base_link 100" /> 
+-->
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+  <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros"
+        type="cartographer_occupancy_grid_node" args="-resolution 0.05" />
+</launch>
