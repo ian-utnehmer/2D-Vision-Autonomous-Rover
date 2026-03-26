@@ -2,6 +2,9 @@
 
 This project implements an autonomous navigation stack for a **Waveshare JetRacer** (NVIDIA Jetson Nano) that overcomes the limitations of 2D LiDAR by integrating real-time semantic segmentation and monocular depth estimation.
 
+Example images are available on my [portfolio](https://github.com/ian-utnehmer/2D-Vision-Autonomous-Rover) (I will add images here soon)
+
+
 ## Project Overview
 Standard 2D LiDAR sensors (like the RPLIDAR A1) often fail to detect low-profile obstacles or differentiate between floor textures. This system utilizes a CSI camera to identify "non-drivable" surfaces—specifically **paper** and **grass**—and projects these detections into the ROS navigation costmap as virtual obstacles.
 
