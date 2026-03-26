@@ -2,7 +2,7 @@
 
 This project implements an autonomous navigation stack for a **Waveshare JetRacer** (NVIDIA Jetson Nano) that overcomes the limitations of 2D LiDAR by integrating real-time semantic segmentation and monocular depth estimation.
 
-Example images are available on my [portfolio](https://github.com/ian-utnehmer/2D-Vision-Autonomous-Rover) (I will add images here soon)
+Example images are available on my [portfolio](https://bold.pro/my/ian-utnehmer-231018002146) (I will add images here soon)
 
 
 ## Project Overview
