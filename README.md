@@ -2,8 +2,19 @@
 
 This project implements an autonomous navigation stack for a **Waveshare JetRacer** (NVIDIA Jetson Nano) that overcomes the limitations of 2D LiDAR by integrating real-time semantic segmentation and monocular depth estimation.
 
-Example images are available on my [portfolio](https://bold.pro/my/ian-utnehmer-231018002146) (I will add images here soon)
+## Project Gallery
 
+| Fused LiDAR + Monodepth2 Costmap | Real-Time Paper Detection |
+| --- | --- |
+| <img src="assets/fused-lidar-monodepth2-costmap.jpeg" alt="Fused LiDAR and Monodepth2 costmap visualization" width="420"> | <img src="assets/real-time-paper-detection.jpeg" alt="Real-time paper detection segmentation output" width="420"> |
+
+| Paper Projection | Rover |
+| --- | --- |
+| <img src="assets/paper-projection.jpeg" alt="Paper projection into the navigation scene" width="420"> | <img src="assets/rover.jpeg" alt="JetRacer rover platform" width="420"> |
+
+| Training Result |
+| --- |
+| <img src="assets/training-result.jpeg" alt="Model training result visualization" width="420"> |
 
 ## Project Overview
 Standard 2D LiDAR sensors (like the RPLIDAR A1) often fail to detect low-profile obstacles or differentiate between floor textures. This system utilizes a CSI camera to identify "non-drivable" surfaces—specifically **paper** and **grass**—and projects these detections into the ROS navigation costmap as virtual obstacles.
@@ -82,6 +93,5 @@ Then, view in RViz.
 * **`checkmissing.py`**: A system health script that verifies all necessary ROS packages, Python libraries, and workspace paths are correctly configured.
 * **`videostream.py`**: A simple test script to verify the CSI camera feed and WebRTC streaming functionality independently of the AI models.
 * **`restart.py`**: A convenience script that kills hanging camera processes and restarts the `nvargus-daemon` to clear hardware errors.
-
 
 
